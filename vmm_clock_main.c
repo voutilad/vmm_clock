@@ -149,14 +149,14 @@ static uint32_t vmm_detect(void)
 	return 0;
 }
 
-struct clocksource vmm_clock2 = {
-	.name	= "vmm-clock2",
+struct clocksource vmm_clock = {
+	.name	= "vmm-clock",
 	.read	= vmm_clock_get_cycles,
 	.rating = 400,
 	.mask	= CLOCKSOURCE_MASK(64),
 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
 };
-EXPORT_SYMBOL_GPL(vmm_clock2);
+EXPORT_SYMBOL_GPL(vmm_clock);
 
 /*
  * Another kvmclock.c copy pasta
@@ -186,17 +186,10 @@ static int vmm_setup_vsyscall_timeinfo(void)
 	if (!(flags & PVCLOCK_TSC_STABLE_BIT))
 		return 0;
 
-	/*
-	if (vmm_clock2.archdata) {
-		vmm_clock2.archdata.vclock_mode = VCLOCK_PVCLOCK;
-	}
-	*/
-
 	vmmclock_init_mem();
 
 	return 0;
 }
-//early_initcall(vmm_setup_vsyscall_timeinfo);
 
 /*
  * Based heavily on the logic from kvmclock.c
@@ -228,7 +221,7 @@ static int __init vmm_clock_init(void)
 	vmm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
 
 	pr_info("%s: attempting to register clocksource\n", __func__);
-	clocksource_register_hz(&vmm_clock2, NSEC_PER_SEC);
+	clocksource_register_hz(&vmm_clock, NSEC_PER_SEC);
 
 	return 0;
 }
@@ -236,7 +229,7 @@ static int __init vmm_clock_init(void)
 static void __exit vmm_clock_exit(void)
 {
 	pr_info("%s: unregistering clocksource\n", __func__);
-	clocksource_unregister(&vmm_clock2);
+	clocksource_unregister(&vmm_clock);
 }
 
 module_init(vmm_clock_init);
