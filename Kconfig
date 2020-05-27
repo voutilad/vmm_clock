@@ -1,0 +1,6 @@
+config VMMCLOCK
+       bool "OpenBSD VMM hypervisor clocksouce"
+       depends on KVM
+       default m
+       help
+         TBD
