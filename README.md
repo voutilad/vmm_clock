@@ -16,6 +16,22 @@ Secondary goals:
 - make the code as short and tight as possible
 - identify a means of testing clock drift
 
+## READ BEFORE FIRST USE!
+
+I'm currently running [a hacked
+vmd(8)](https://marc.info/?l=openbsd-tech&m=159028442625596&w=2)
+implementation as I develop this clock.
+
+IT WILL NOT WORK WITH VMM/VMD UNTIL THE LIBEVENT THREAD SAFETY ISSUES
+ARE RESOLVED!!!
+
+If you plan on experimenting with this, apply [my
+patch](https://marc.info/?l=openbsd-tech&m=159028442625596&q=p3) to
+your own checkout or clone of the OpenBSD src tree and use the
+libevent2-enabled vmd(8) implementation.
+
+YOU HAVE BEEN WARNED!
+
 ## Building & Installing
 
 For now, follow some of the pre-reqs for
