@@ -27,7 +27,7 @@ should just be able to:
 ```
 
 You can load it at boot by creating
-`/etc/modules-load.d/vmm_clock.conf` with just the concents:
+`/etc/modules-load.d/vmm_clock.conf` with just the contents:
 
 ```
 vmm_clock
