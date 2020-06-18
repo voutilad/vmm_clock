@@ -25,12 +25,12 @@ implementation as I develop this clock.
 IT WILL NOT WORK WITH VMM/VMD UNTIL THE LIBEVENT THREAD SAFETY ISSUES
 ARE RESOLVED!!!
 
-If you plan on experimenting with this, apply [my
-patch](https://marc.info/?l=openbsd-tech&m=159028442625596&q=p3) to
-your own checkout or clone of the OpenBSD src tree and use the
-libevent2-enabled vmd(8) implementation.
+If you'd like to experiment with this, please patch `vmd(8)` using
+the following diff:
 
-YOU HAVE BEEN WARNED!
+  https://sisu.io/patches/vmd-thread-safety-180620-v1.patch
+
+IF YOU DON'T PATCH, YOU HAVE BEEN WARNED!
 
 ## Building & Installing
 
