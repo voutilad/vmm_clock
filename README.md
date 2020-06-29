@@ -18,19 +18,9 @@ Secondary goals:
 
 ## READ BEFORE FIRST USE!
 
-I'm currently running [a hacked
-vmd(8)](https://marc.info/?l=openbsd-tech&m=159028442625596&w=2)
-implementation as I develop this clock.
-
-IT WILL NOT WORK WITH VMM/VMD UNTIL THE LIBEVENT THREAD SAFETY ISSUES
-ARE RESOLVED!!!
-
-If you'd like to experiment with this, please patch `vmd(8)` using
-the following diff:
-
-  https://sisu.io/patches/vmd-thread-safety-180620-v1.patch
-
-IF YOU DON'T PATCH, YOU HAVE BEEN WARNED!
+You absolutely need a recent -current snapshot from 28 June or
+more recently. It contains major fixes to vmd(8) that Linux
+guests rely on for stability when using this clocksource.
 
 ## Building & Installing
 
