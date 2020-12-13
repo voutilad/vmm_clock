@@ -1,9 +1,8 @@
 # vmm_clock
 
-TBA...but in short this will be an attempt at a bare-minimum Linux
-clocksource implementation based on Linux's existing kvmclock for use
-when running Linux distros as guests under OpenBSD's vmm(4)/vmd(8)
-hypervisor framework.
+This is a Linux clocksource implementation based on the existing Linux
+`kvmclock`. It's specifically designed for using when running a Linux
+kernel as a guest under OpenBSD's vmm(4)/vmd(8) hypervisor framework.
 
 Primary goals:
 - provide a clocksource that doesn't suffer from unmanageable
@@ -11,16 +10,19 @@ Primary goals:
   Linux LTS kernel (e.g. 5.4)
 - provide a clocksource loadable as a module that does not require
   users build a complete kernel from source
+- be platform independent, i.e. work the same on Intel and AMD hosts.
 
 Secondary goals:
 - make the code as short and tight as possible
 - identify a means of testing clock drift
 
-## READ BEFORE FIRST USE!
+## Prerequisites
 
-You absolutely need a recent -current snapshot from 28 June or
-more recently. It contains major fixes to vmd(8) that Linux
-guests rely on for stability when using this clocksource.
+You'll need OpenBSD 6.8 or newer as it contains fixes I provided for
+race conditions in vmd(8) that cause stability problems with Linux
+guests. It is 100% required for this kernel module to work. If you try
+to use this with an older OpenBSD version, I guarantee you will have
+runaway vmd(8) processes or crashes.
 
 ## Building & Installing
 
@@ -42,17 +44,8 @@ vmm_clock
 ## Tested Platforms and Configs
 
 I'm testing with the following:
-- Alpine 3.11.6 and the stock v5.4 `-virt` kernel
+- Alpine 3.12.2 and their stock v5.4 `-virt` kernel
 - Debian Buster 10.4 and its v4.19 kernel
-
-In all cases, I'm booting with the following kernel arguments:
-- `tsc=reliable`
-- `tsc=noirqtime`
-
-Of little to not consequence, I do also use:
-- `nosmp`
-- `elevator=noop`
-
 
 As usual, no warranty...use at your own risk, etc.!
 
