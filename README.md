@@ -16,6 +16,9 @@ Secondary goals:
 - make the code as short and tight as possible
 - identify a means of testing clock drift
 
+Known issues:
+- if you try to unload the module, you will probably panic the kernel
+
 ## Prerequisites
 
 You'll need OpenBSD 6.8 or newer as it contains fixes I provided for
