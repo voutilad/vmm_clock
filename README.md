@@ -18,6 +18,8 @@ Secondary goals:
 
 Known issues:
 - if you try to unload the module, you will probably panic the kernel
+- since kvmclock wasn't designed to be a module, it may never be possible to
+  support module removal
 
 ## Prerequisites
 
@@ -49,6 +51,7 @@ vmm_clock
 I'm testing with the following:
 - Alpine 3.12.2 and their stock v5.4 `-virt` kernel
 - Debian Buster 10.4 and its v4.19 kernel
+- Ubuntu 20.04 and its v5.4 kernel
 
 As usual, no warranty...use at your own risk, etc.!
 
