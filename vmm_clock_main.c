@@ -95,7 +95,6 @@ static void vmmclock_init_mem(void)
 	unsigned long ncpus;
 	unsigned int order;
 	struct page *p;
-	int r;
 
 	pr_info("%s: starting", __func__);
 	// todo: simplify to 1
@@ -112,23 +111,6 @@ static void vmmclock_init_mem(void)
 	}
 
 	hvclock_mem = page_address(p);
-
-	/*
-	 * hvclock is shared between the guest and the hypervisor, must
-	 * be mapped decrypted.
-	 */
-	if (sev_active()) {
-		r = set_memory_decrypted((unsigned long) hvclock_mem,
-					 1UL << order);
-		if (r) {
-			__free_pages(p, order);
-			hvclock_mem = NULL;
-			pr_warn("%s: set_memory_decrypted() failed. Disabling",
-			    __func__);
-			return;
-		}
-	}
-
 	memset(hvclock_mem, 0, PAGE_SIZE << order);
 }
 
