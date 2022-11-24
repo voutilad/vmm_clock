@@ -19,7 +19,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include <linux/version.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -29,7 +29,12 @@
 #include <linux/percpu.h>
 #include <linux/sched.h>
 #include <linux/sched/clock.h>
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,11,0)
+#include <asm/cacheflush.h>
+#else
 #include <linux/set_memory.h>
+#endif
 
 #include <asm/cpufeature.h>
 #include <asm/msr.h>
@@ -39,8 +44,8 @@
 
 #include "pvclock.h"
 
-static int msr_vmm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
-static u64 vmm_sched_clock_offset __ro_after_init;
+static int msr_vmm_system_time = MSR_KVM_SYSTEM_TIME;
+static u64 vmm_sched_clock_offset;
 
 ////////////////////////////////////
 /*
@@ -51,8 +56,8 @@ static u64 vmm_sched_clock_offset __ro_after_init;
 	(PAGE_SIZE / sizeof(struct pvclock_vsyscall_time_info))
 
 static struct pvclock_vsyscall_time_info
-			hv_clock_boot[HVC_BOOT_ARRAY_SIZE] __bss_decrypted __aligned(PAGE_SIZE);
-//static struct pvclock_wall_clock wall_clock __bss_decrypted;
+			hv_clock_boot[HVC_BOOT_ARRAY_SIZE] __aligned(PAGE_SIZE);
+
 static DEFINE_PER_CPU(struct pvclock_vsyscall_time_info *, hv_clock_per_cpu);
 static struct pvclock_vsyscall_time_info *hvclock_mem;
 
@@ -194,8 +199,9 @@ static int __init vmm_clock_init(void)
 
 	this_cpu_write(hv_clock_per_cpu, &hv_clock_boot[0]);
 	vmm_register_clock("primary cpu clock");
+#if LINUX_VERSION_CODE > KERNEL_VERSION(4,14,96)
 	pvclock_set_pvti_cpu0_va(hv_clock_boot);
-
+#endif
 	// We can assume stable bit
 	pvclock_set_flags(PVCLOCK_TSC_STABLE_BIT);
 
