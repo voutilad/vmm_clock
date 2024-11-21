@@ -5,6 +5,7 @@
  */
 #include <linux/sched.h>
 #include <linux/sched/clock.h>
+#include <asm/msr.h>
 
 #include "pvclock.h"
 
